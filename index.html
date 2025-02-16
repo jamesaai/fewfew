@@ -3,235 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Collar Dashboard</title>
+    <title>Word Hunt Solver</title>
     <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
             padding: 20px;
         }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #004f7c;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+            text-align: center;
+        }
+
+        h1 {
             margin-bottom: 20px;
         }
 
-        header .logo {
-            font-size: 24px;
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            grid-gap: 5px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .cell {
+            width: 40px;
+            height: 40px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .highlight {
+            background-color: #00ff00;
+            color: white;
             font-weight: bold;
         }
 
-        header .profile {
-            display: flex;
-            align-items: center;
-        }
-
-        header .profile-pic {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        header .user-name {
-            font-size: 18px;
-        }
-
-        main .dashboard {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .dashboard > div {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        h3 {
-            margin-bottom: 15px;
-            font-size: 20px;
-        }
-
-        .pet-pic {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
+        input {
+            padding: 8px;
+            width: 80%;
             margin-bottom: 10px;
+            font-size: 16px;
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            margin-top: 5px;
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
         }
 
-        .progress-bar {
-            background-color: #76c7c0;
-            width: 85%;
-            border-radius: 5px;
+        button:hover {
+            background-color: #45a049;
         }
 
-        .map-container {
-            height: 200px;
-            background-color: #d1d1d1;
-            margin-top: 10px;
-            border-radius: 8px;
+        .words {
+            margin-top: 20px;
+            text-align: left;
         }
 
-        ul {
+        .words ul {
             list-style-type: none;
-        }
-
-        ul li {
-            margin-bottom: 10px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 14px;
-        }
-
-        footer a {
-            color: #004f7c;
-            text-decoration: none;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">Pet Collar Dashboard</div>
-        <div class="profile">
-            <img src="profile-pic.jpg" alt="Profile Picture" class="profile-pic">
-            <span class="user-name">James' Pet</span>
-        </div>
-    </header>
+    <div class="container">
+        <h1>Word Hunt Solver</h1>
 
-    <main>
-        <div class="dashboard">
-            <!-- Pet Profile Section -->
-            <div class="profile-section">
-                <h2>Pet's Name</h2>
-                <img src="pet-pic.jpg" alt="Pet Picture" class="pet-pic">
-                <p>Breed: Labrador</p>
-                <p>Age: 3 Years</p>
-            </div>
+        <input type="text" id="wordInput" placeholder="Enter word list separated by commas" />
+        <button onclick="solvePuzzle()">Solve</button>
 
-            <!-- Collar Stats Section -->
-            <div class="collar-stats">
-                <h3>Collar Stats</h3>
-                <div class="stat-item">
-                    <p>Battery Life: <span id="battery-life">85%</span></p>
-                    <div class="progress-bar" id="battery-progress"></div>
-                </div>
-                <div class="stat-item">
-                    <p>Collar Temperature: <span id="collar-temp">26°C</span></p>
-                </div>
-                <div class="stat-item">
-                    <p>Signal Strength: <span id="signal-strength">Strong</span></p>
-                </div>
-            </div>
+        <div class="grid-container" id="grid"></div>
 
-            <!-- Location Tracking Section -->
-            <div class="location-tracking">
-                <h3>Location Tracking</h3>
-                <div id="map" class="map-container"></div>
-            </div>
-
-            <!-- Activity Tracker Section -->
-            <div class="activity-tracker">
-                <h3>Activity Tracker</h3>
-                <p>Steps Taken: <span id="steps">500</span> steps</p>
-                <p>Distance Traveled: <span id="distance">1.2 km</span></p>
-                <p>Calories Burned: <span id="calories">80</span> kcal</p>
-            </div>
-
-            <!-- Health Monitor Section -->
-            <div class="health-monitor">
-                <h3>Health Monitor</h3>
-                <p>Heart Rate: <span id="heart-rate">95 bpm</span></p>
-                <p>Body Temperature: <span id="body-temp">38°C</span></p>
-                <p>Weight: <span id="weight">30 kg</span></p>
-            </div>
-
-            <!-- Notifications Section -->
-            <div class="notifications">
-                <h3>Notifications</h3>
-                <ul id="notifications-list">
-                    <li>No new notifications</li>
-                </ul>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <div class="footer-links">
-            <a href="#">Help</a> | 
-            <a href="#">Privacy Policy</a> | 
-            <a href="#">Terms of Service</a>
-        </div>
-    </footer>
+        <div class="words" id="wordsList"></div>
+    </div>
 
     <script>
-        // Sample JavaScript functionality for dynamic updates
+        // Create a sample word grid (10x10)
+        const grid = [
+            ['C', 'A', 'T', 'D', 'O', 'G', 'S', 'H', 'T', 'E'],
+            ['S', 'P', 'A', 'C', 'E', 'S', 'I', 'R', 'T', 'T'],
+            ['R', 'E', 'I', 'V', 'E', 'R', 'A', 'T', 'O', 'W'],
+            ['T', 'A', 'B', 'L', 'E', 'A', 'S', 'H', 'I', 'E'],
+            ['A', 'P', 'I', 'A', 'K', 'P', 'E', 'M', 'R', 'Y'],
+            ['O', 'S', 'G', 'I', 'N', 'B', 'L', 'A', 'C', 'E'],
+            ['L', 'O', 'R', 'T', 'N', 'E', 'V', 'O', 'L', 'E'],
+            ['E', 'S', 'I', 'G', 'R', 'L', 'D', 'I', 'S', 'K'],
+            ['S', 'I', 'N', 'L', 'M', 'K', 'L', 'O', 'G', 'F'],
+            ['S', 'T', 'E', 'N', 'R', 'Y', 'S', 'T', 'S', 'G'],
+        ];
 
-        // Update battery progress dynamically
-        const batteryProgress = document.getElementById('battery-progress');
-        const batteryLife = document.getElementById('battery-life');
-
-        function updateBatteryProgress() {
-            const batteryPercentage = 85; // Simulating the battery life percentage
-            batteryProgress.style.width = batteryPercentage + '%';
-            batteryLife.innerText = batteryPercentage + '%';
+        // Function to display the grid
+        function displayGrid() {
+            const gridContainer = document.getElementById('grid');
+            gridContainer.innerHTML = '';
+            grid.forEach(row => {
+                row.forEach(cell => {
+                    const div = document.createElement('div');
+                    div.className = 'cell';
+                    div.innerText = cell;
+                    gridContainer.appendChild(div);
+                });
+            });
         }
 
-        // Location and Map Simulation (could use an API like Google Maps for real implementation)
-        function updateLocation() {
-            const mapContainer = document.getElementById('map');
-            mapContainer.innerHTML = '<p>Pet’s current location will be shown here (using Google Maps API)</p>';
+        // Function to highlight words
+        function highlightWord(word, positions) {
+            const gridContainer = document.getElementById('grid');
+            positions.forEach(pos => {
+                const cellIndex = pos[0] * 10 + pos[1];
+                gridContainer.children[cellIndex].classList.add('highlight');
+            });
         }
 
-        // Simulate updating health data
-        function updateHealthStats() {
-            document.getElementById('heart-rate').innerText = '95 bpm';
-            document.getElementById('body-temp').innerText = '38°C';
-            document.getElementById('weight').innerText = '30 kg';
+        // Function to find word in the grid
+        function findWord(word) {
+            const directions = [
+                {x: 0, y: 1},  // Right
+                {x: 1, y: 0},  // Down
+                {x: 1, y: 1},  // Diagonal down-right
+                {x: -1, y: 1}, // Diagonal up-right
+            ];
+
+            for (let i = 0; i < grid.length; i++) {
+                for (let j = 0; j < grid[i].length; j++) {
+                    for (const direction of directions) {
+                        let positions = [];
+                        let x = i, y = j;
+                        let valid = true;
+
+                        for (let k = 0; k < word.length; k++) {
+                            if (x < 0 || x >= grid.length || y < 0 || y >= grid[i].length || grid[x][y] !== word[k]) {
+                                valid = false;
+                                break;
+                            }
+                            positions.push([x, y]);
+                            x += direction.x;
+                            y += direction.y;
+                        }
+
+                        if (valid) {
+                            return positions;
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
-        // Simulate activity data
-        function updateActivityStats() {
-            document.getElementById('steps').innerText = '500';
-            document.getElementById('distance').innerText = '1.2 km';
-            document.getElementById('calories').innerText = '80 kcal';
+        // Function to solve the puzzle
+        function solvePuzzle() {
+            const wordInput = document.getElementById('wordInput').value;
+            const words = wordInput.split(',').map(word => word.trim().toUpperCase());
+            document.getElementById('wordsList').innerHTML = `<h3>Words to Find:</h3><ul><li>${words.join('</li><li>')}</li></ul>`;
+
+            words.forEach(word => {
+                const positions = findWord(word);
+                if (positions) {
+                    highlightWord(word, positions);
+                }
+            });
         }
 
-        // Initializing functions on page load
-        window.onload = function () {
-            updateBatteryProgress();
-            updateLocation();
-            updateHealthStats();
-            updateActivityStats();
-        };
+        // Initialize grid and display it
+        displayGrid();
     </script>
 
 </body>
