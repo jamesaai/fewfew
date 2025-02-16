@@ -3,15 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ace's Step Tracker</title>
+  <title>Pet Step Tracker</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="app">
     <h1>Dog Step Tracker</h1>
-    <p>Steps: <span id="step-count">Loading...</span></p>
-    <button onclick="getDogSteps()">Refresh Steps</button>
+    <p id="pet-name">Loading...</p>
+    <p id="step-count">Loading...</p>
+    <button onclick="fetchSteps()">Refresh Steps</button>
   </div>
+
   <script src="app.js"></script>
 </body>
 </html>
